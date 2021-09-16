@@ -33,7 +33,7 @@ public:
 	}
 
 
-	client_socket accept() {
+	client_socket accept() const {
 		if (client_socket client = { ::accept(*this, nullptr, nullptr) }; client != INVALID_SOCKET) {
 			return client;
 		}

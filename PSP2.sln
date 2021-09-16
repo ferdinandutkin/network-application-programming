@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31612.314
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PSP2", "PSP2\PSP2.vcxproj", "{AF4808C9-32F7-430D-9C91-0B00C1E3AFAC}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "client", "client\client.vcxproj", "{C937AA80-4DF6-44E0-9A5A-CB68501FA127}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,14 @@ Global
 		{AF4808C9-32F7-430D-9C91-0B00C1E3AFAC}.Release|x64.Build.0 = Release|x64
 		{AF4808C9-32F7-430D-9C91-0B00C1E3AFAC}.Release|x86.ActiveCfg = Release|Win32
 		{AF4808C9-32F7-430D-9C91-0B00C1E3AFAC}.Release|x86.Build.0 = Release|Win32
+		{C937AA80-4DF6-44E0-9A5A-CB68501FA127}.Debug|x64.ActiveCfg = Debug|x64
+		{C937AA80-4DF6-44E0-9A5A-CB68501FA127}.Debug|x64.Build.0 = Debug|x64
+		{C937AA80-4DF6-44E0-9A5A-CB68501FA127}.Debug|x86.ActiveCfg = Debug|Win32
+		{C937AA80-4DF6-44E0-9A5A-CB68501FA127}.Debug|x86.Build.0 = Debug|Win32
+		{C937AA80-4DF6-44E0-9A5A-CB68501FA127}.Release|x64.ActiveCfg = Release|x64
+		{C937AA80-4DF6-44E0-9A5A-CB68501FA127}.Release|x64.Build.0 = Release|x64
+		{C937AA80-4DF6-44E0-9A5A-CB68501FA127}.Release|x86.ActiveCfg = Release|Win32
+		{C937AA80-4DF6-44E0-9A5A-CB68501FA127}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

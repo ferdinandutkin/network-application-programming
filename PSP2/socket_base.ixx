@@ -1,7 +1,9 @@
 #include <memory>
 #include <WinSock2.h>
 #include <iostream>
+
 export module socket_base;
+import wsa_exception;
 import wsa_wrapper;
 import endian;
 import wsa_provider;
@@ -14,7 +16,7 @@ export class socket_address {
 	sockaddr_in _wrapped;
 public:
 	socket_address(ip_address address, unsigned short port) {
-		_wrapped = { PF_INET, to_big_endian(port), {.S_un = {.S_addr = address.as_big_endian().operator size_t()}} };
+		_wrapped = { PF_INET, to_big_endian(port), {.S_un = {.S_addr = address.as_big_endian().operator uint32_t()}} };
 	}
 
 	operator sockaddr_in() const {
@@ -68,19 +70,19 @@ public:
 			_wrapped = sock;
 
 		}
-		else throw std::runtime_error("invalid socket");
+		else throw wsa_exception("invalid socket");
 
 	}
 
 
-	void bind(ip_address address, unsigned short port) {
+	void bind(ip_address address, unsigned short port) const {
 		bind(socket_address{ address, port });
 	}
 
 
 	 
 
-	void bind(socket_address address) {
+	void bind(socket_address address) const {
 		if (::bind(_wrapped, reinterpret_cast<sockaddr*>(&address), sizeof sockaddr_in) == SOCKET_ERROR) {
 			std::cerr << "RIP" << WSAGetLastError() << std::endl;
 		}

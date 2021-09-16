@@ -27,6 +27,14 @@ public:
 
 	}
 
+	template<size_t length> //можно сделать и для других типов но там паддинг систмнозависимый
+	std::string recieve() {
+		if (_client) {
+			return _client.value().recieve<length>();
+		}
+		else throw std::exception("?????");
+	}
+
 	void send(std::string message) {
 		if (_client) {
 			_client.value().send(message);

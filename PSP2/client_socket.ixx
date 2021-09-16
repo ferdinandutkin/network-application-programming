@@ -21,18 +21,30 @@ public:
 	client_socket(SOCKET wrapped) : socket_base{ wrapped } {
 	}
 
+	client_socket() : socket_base{} {
+	}
 
-	void send(std::string message) {
+
+	void send(std::string message) const {
 		if (::send(_wrapped, message.c_str(), message.size(), 0) == SOCKET_ERROR) {
-			throw wsa_exception("send");
+			throw wsa_exception(__func__);
 		}
 	}
 	 
 
 	void connect(socket_address address) const {
 		if (::connect(_wrapped, reinterpret_cast<sockaddr*>(&address), sizeof address) == SOCKET_ERROR) {
-			throw wsa_exception("listen");
+			throw wsa_exception(__func__);
+		} 
+	}
+
+	template<size_t length> //можно сделать и для других типов но там паддинг систмнозависимый
+	std::string recieve() const {
+		char response[length]{};
+		if (::recv(_wrapped, response, std::size(response), 0) == SOCKET_ERROR) {
+			throw wsa_exception(__func__);
 		}
+		return { response };
 	}
 
 };
