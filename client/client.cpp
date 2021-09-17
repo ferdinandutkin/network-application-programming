@@ -1,11 +1,35 @@
 ﻿// client.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
 //
 
-#include <iostream>
 
+ 
+import client;
+import ip;
+import socket_base;
+
+#include <iostream>
+#include <format>
 int main()
 {
-    std::cout << "Hello World!\n";
+
+
+    try {
+        client c = { 1234 };
+        c.connect(1111);
+
+
+        for (int i{}; i < 1000; i++) {
+            c << std::format("Hello from client {:03}!", i);
+        }
+
+        std::cout << c.recieve<3>();
+    }
+  
+
+    catch (std::exception& e) {
+        std::cout << e.what();
+    }
+   
 }
 
 // Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"

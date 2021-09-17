@@ -1,8 +1,12 @@
+module;
+
 #include <memory>
 #include <WinSock2.h>
 #include <iostream>
 
+
 export module socket_base;
+
 import wsa_exception;
 import wsa_wrapper;
 import endian;
@@ -15,12 +19,32 @@ export class socket_address {
 
 	sockaddr_in _wrapped;
 public:
-	socket_address(ip_address address, unsigned short port) {
-		_wrapped = { PF_INET, to_big_endian(port), {.S_un = {.S_addr = address.as_big_endian().operator uint32_t()}} };
+
+	socket_address(sockaddr_in wrapped) : _wrapped{ wrapped } {
 	}
+	socket_address(ip_address address, unsigned short port) {
+		_wrapped = { PF_INET,  to_big_endian(port), {.S_un = {.S_addr = address.as_big_endian().operator uint32_t()}} };
+	}
+
+
+	friend std::ostream& operator << (std::ostream& os, const socket_address& a) {
+		os << a.get_ip() << ':' << a.get_port();
+		return os;
+	}
+
+	
+
 
 	operator sockaddr_in() const {
 		return _wrapped;
+	}
+
+	ip_address get_ip() const {
+		return {_wrapped.sin_addr.S_un.S_addr};
+	}
+
+	unsigned short get_port() const {
+		return _wrapped.sin_port;
 	}
 
 
@@ -79,6 +103,14 @@ public:
 		bind(socket_address{ address, port });
 	}
 
+
+	socket_address get_address() const {
+		sockaddr sockaddr{};
+		int size = sizeof sockaddr;
+		getpeername(_wrapped, &sockaddr, &size);
+
+		return {*reinterpret_cast<sockaddr_in*>(&sockaddr)};
+	}
 
 	 
 

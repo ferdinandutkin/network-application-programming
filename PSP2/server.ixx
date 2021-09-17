@@ -1,3 +1,5 @@
+module;
+
 #include <optional>
 #include <string>
 export module server;
@@ -17,7 +19,7 @@ public:
 		_socket.bind(ip_address::loopback(), port);
 	}
 
-	void start() {
+	void start() const {
 		_socket.listen(connection_number::max);
 
 	}
@@ -27,15 +29,30 @@ public:
 
 	}
 
+	socket_address get_client_address() const {
+
+		if (_client) {
+			return _client.value().get_address();
+		}
+		else throw std::exception("?????");
+	
+	}
+
 	template<size_t length> //можно сделать и для других типов но там паддинг систмнозависимый
-	std::string recieve() {
+	std::string recieve() const {
 		if (_client) {
 			return _client.value().recieve<length>();
 		}
 		else throw std::exception("?????");
 	}
 
-	void send(std::string message) {
+
+	friend const server& operator << (const server& server, const std::string& message) {
+		server.send(message);
+		return server;
+	}
+
+	void send(std::string message) const {
 		if (_client) {
 			_client.value().send(message);
 		}

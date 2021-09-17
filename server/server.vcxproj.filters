@@ -15,18 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="client.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="..\PSP2\ip.ixx">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="..\PSP2\endian.ixx">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="..\PSP2\wsa_exception.ixx">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="..\PSP2\wsa_provider.ixx">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
@@ -46,6 +34,18 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="..\PSP2\socket_base.ixx">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="..\PSP2\ip.ixx">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="..\PSP2\endian.ixx">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="..\PSP2\wsa_exception.ixx">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="server.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>

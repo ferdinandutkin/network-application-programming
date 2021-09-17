@@ -1,3 +1,5 @@
+module;
+
 #include <memory>
 #include <WinSock2.h>
 #include <iostream>
@@ -34,6 +36,8 @@ public:
 
 
 	client_socket accept() const {
+
+	
 		if (client_socket client = { ::accept(*this, nullptr, nullptr) }; client != INVALID_SOCKET) {
 			return client;
 		}
