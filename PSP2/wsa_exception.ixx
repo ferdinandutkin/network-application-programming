@@ -16,21 +16,6 @@ export class wsa_exception : public std::exception {
 
 private:
     std::string _message;
-public:
-
-    const char* what() const noexcept override {
-        return _message.c_str();
-    }
-
-    const int error_code;
-
-    wsa_exception() : error_code{ WSAGetLastError() } {
-
-
-        
-        _message = format_message(error_code);
-    }
-
 
     static std::string format_message(int error_code) {
         char error[256];
@@ -39,12 +24,26 @@ public:
             nullptr);
         if (len == 0)
             return "N/A";
-      
+
         while (len && (error[len - 1] == '\r' || error[len - 1] == '\n'))
             --len;
         return { error, len };
 
     }
+public:
+
+    const char* what() const noexcept override {
+        return _message.c_str();
+    }
+
+    const int error_code;
+
+    wsa_exception() : error_code{ WSAGetLastError() } {        
+        _message = format_message(error_code);
+    }
+
+
+   
     wsa_exception(std::string prefix) : wsa_exception{} {
 
         _message = prefix + ": " + _message;

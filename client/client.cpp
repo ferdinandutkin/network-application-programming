@@ -1,14 +1,22 @@
-﻿// client.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
-//
+﻿import client;
 
 
- 
-import client;
-import ip;
-import socket_base;
-
+#include <regex>
 #include <iostream>
 #include <format>
+
+
+int extract_digit(const std::string& source) {
+    static std::regex match_digits{ R"(\d+)" };
+    std::smatch match_result;
+    std::regex_search(source, match_result, match_digits);
+
+    int digit = std::stoi(match_result.str());
+
+    return digit;
+}
+
+
 int main()
 {
 
@@ -17,12 +25,33 @@ int main()
         client c = { 1234 };
         c.connect(1111);
 
+         
+        int i{};
+        const char format_string[] = "Hello from client {:03}!";
+        while (true) {
 
-        for (int i{}; i < 1000; i++) {
-            c << std::format("Hello from client {:03}!", i);
+ 
+
+            auto message = (i < 100)? std::format(format_string, i) : std::string(22, '\0');
+
+
+            c << message;
+            std::cout << message << std::endl;
+
+            
+          
+
+
+            auto recieved = c.recieve<22>();
+            i = extract_digit(recieved);
+            i++;
+
+
         }
+           
+      
 
-        std::cout << c.recieve<3>();
+        
     }
   
 
@@ -32,13 +61,4 @@ int main()
    
 }
 
-// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
-// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
-
-// Советы по началу работы 
-//   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
-//   2. В окне Team Explorer можно подключиться к системе управления версиями.
-//   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
-//   4. В окне "Список ошибок" можно просматривать ошибки.
-//   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
-//   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.
+ 
