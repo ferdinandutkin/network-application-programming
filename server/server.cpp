@@ -1,7 +1,7 @@
 import server;
 
 
-#include <regex>
+
 #include <iostream>
 #include <format>
 
@@ -14,28 +14,43 @@ int main() {
 
 		s.start();
 
-		s.accept();
-
-		std::cout << s.get_client_address();
 
 
+		while (true) {
+			s.accept();
 
-		while (true)
-		{
-
-			auto message = s.recieve<22>();
+			std::cout << s.get_client_address() << std::endl;
 
 
-			std::cout << std::format("recieved: {}", message.empty() ? "empty message" : message) << std::endl;
 
-			if (message.empty()) {
-				break;
+			bool done{};
+
+			while (not done)
+			{
+
+
+				s.recieve<22>([&](std::string message) {
+
+
+					bool empty = message.empty();
+
+					std::cout << std::format("recieved: {}", empty ? "empty message" : message) << std::endl;
+
+					if (empty) {
+						done = true;
+						return;
+					}
+
+					s << message;
+
+					done = empty;
+
+					std::cout << std::format("sent: {}", message) << std::endl;
+					}).join();
+
 			}
-
-			s << message;
-
-			std::cout << std::format("sent: {}", message.empty() ? "empty message" : message) << std::endl;
 		}
+		
 
 	}
 	catch (std::exception& e) {

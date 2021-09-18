@@ -5,14 +5,14 @@ module;
 export module server;
 
 
-import server_socket;
-import client_socket;
+import server_socket_async;
+import client_socket_async;
 import ip;
 
 export class server {
 private:
-	server_socket _socket;
-	std::optional<client_socket> _client;
+	server_socket_async _socket;
+	std::optional<client_socket_async> _client;
 public:
 
 	server(unsigned short port) : _socket{ socket_type::stream, ip_protocol::tcp }, _client{} { 
@@ -38,6 +38,17 @@ public:
 	
 	}
 
+
+	template<size_t length> //можно сделать и для других типов но там паддинг систмнозависимый
+	std::thread recieve(std::function<void(std::string)> on_completed) const {
+		if (_client) {
+			return _client.value().recieve<length>(on_completed);
+		}
+		else throw std::exception("?????");
+	
+	}
+
+
 	template<size_t length> //можно сделать и для других типов но там паддинг систмнозависимый
 	std::string recieve() const {
 		if (_client) {
@@ -45,7 +56,13 @@ public:
 		}
 		else throw std::exception("?????");
 	}
-
+ 
+	std::thread send(std::string message, std::function<void()> on_completed) const {
+		if (_client) {
+			return _client.value().send(message, on_completed);
+		}
+		else throw std::exception("?????");
+	}
 
 	friend const server& operator << (const server& server, const std::string& message) {
 		server.send(message);

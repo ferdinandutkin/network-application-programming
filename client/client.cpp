@@ -1,9 +1,11 @@
 ﻿import client;
-
+import ip;
 
 #include <regex>
 #include <iostream>
 #include <format>
+#include <functional>
+#include <thread>
 
 
 int extract_digit(const std::string& source) {
@@ -23,34 +25,25 @@ int main()
 
     try {
         client c = { 1234 };
-        c.connect(1111);
+        c.connect(1111, ip_address::loopback(), [&] {
 
-         
-        int i{};
-        const char format_string[] = "Hello from client {:03}!";
-        while (true) {
+            int i{};
+            const char format_string[] = "Hello from client {:03}!";
+            while (true) {
 
- 
+                auto message = (i < 100) ? std::format(format_string, i) : std::string(22, '\0');
 
-            auto message = (i < 100)? std::format(format_string, i) : std::string(22, '\0');
+                c << message;
+                std::cout << message << std::endl;
 
+                c.recieve<22>([&](std::string recieved) {
+                    i = extract_digit(recieved);
+                    i++;
+                    }).join();
 
-            c << message;
-            std::cout << message << std::endl;
+            }
 
-            
-          
-
-
-            auto recieved = c.recieve<22>();
-            i = extract_digit(recieved);
-            i++;
-
-
-        }
-           
-      
-
+            }).join();
         
     }
   
