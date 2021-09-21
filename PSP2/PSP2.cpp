@@ -16,17 +16,7 @@ int main()
 
 
     
-
-    auto localhost = ip_address::loopback();
-    
-    socket_base sock = { socket_type::stream, ip_protocol::tcp };
-
-    sock.bind(localhost, 1111);
-
-    
-  
  
-    std::cout << localhost;
 }
 
 

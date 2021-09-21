@@ -1,34 +1,47 @@
 module;
 
 import client_socket;
+import socket_base;
+import socket_base_async;
 
-
+#include <WinSock2.h>
 #include <string>
 #include <functional>
-#include <WinSock2.h>
 #include <thread>
 
 export module client_socket_async;
 
-export class client_socket_async :  public client_socket {
+ 
+
+
+
+export template <ip_protocol protocol>
+class client_socket_async :  public client_socket<protocol>, public socket_base_async<protocol> {
 
 
 public:
-	using client_socket::client_socket;
-	using client_socket::send;
-	using client_socket::connect;
-	using client_socket::recieve;
 
+	using socket_base<protocol>::get_address;
+	using socket_base<protocol>::bind;
+
+	using client_socket<protocol>::client_socket;
+	using client_socket<protocol>::connect;
+	using client_socket<protocol>::recieve;
+	using client_socket<protocol>::send;
+ 
+
+	using socket_base_async<protocol>::send;
+	using socket_base_async<protocol>::recieve;
 	 
 	client_socket_async(SOCKET wrapped) : client_socket{ wrapped } {
 	}
 
  
-	client_socket_async(client_socket base) : client_socket{ base.operator SOCKET() } {
+	client_socket_async(client_socket<protocol> base) : client_socket<protocol>{ base.operator SOCKET() } {
 
 	}
 
-	client_socket_async() : client_socket{} {
+	client_socket_async() : client_socket<protocol>{} {
 	}
 
 
@@ -42,12 +55,14 @@ public:
 
 			} };
 	}
- 
+
+
+
 
 	std::thread connect(socket_address address, std::function<void()> on_completed) const {
 
 		return std::thread{ [=] {
-			this->client_socket::connect(address);
+			this->client_socket<protocol>::connect(address);
 			on_completed();
 
 			} };
@@ -62,11 +77,14 @@ public:
 	template<size_t length> 
 	std::thread recieve(std::function<void(std::string)> on_completed) const {
 		return std::thread{ [=] {
-		   auto res = this->client_socket::recieve<length>();
+		   auto res = this->client_socket<protocol>::recieve<length>();
 		   on_completed(res);
 
 		   } };
 	}
+
+
+
 
 
 };

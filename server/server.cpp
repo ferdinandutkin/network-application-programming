@@ -1,6 +1,6 @@
 import server;
 
-
+import socket_base;
 
 #include <iostream>
 #include <format>
@@ -10,7 +10,7 @@ import server;
 int main() {
 
 	try {
-		server s = { 1111 };
+		server<ip_protocol::tcp> s = { 1111 };
 
 		s.start();
 

@@ -4,35 +4,53 @@ module;
 #include <string>
 export module server;
 
-
+import socket_base;
+import host_base;
 import server_socket_async;
 import client_socket_async;
 import ip;
 
-export class server {
-private:
-	server_socket_async _socket;
-	std::optional<client_socket_async> _client;
+
+
+
+template<ip_protocol protocol>
+class server_base : public host_base<protocol, server_socket_async> {
+
+};
+
+ 
+
+template<> 
+class server_base<ip_protocol::tcp> : public host_base<ip_protocol::tcp, server_socket_async> {
+protected:
+	std::optional<client_socket_async<ip_protocol::tcp>> _client;
+};
+
+export template<ip_protocol protocol>
+class server  : public server_base<protocol> {
+
+	
 public:
 
-	server(unsigned short port) : _socket{ socket_type::stream, ip_protocol::tcp }, _client{} { 
-		_socket.bind(ip_address::loopback(), port);
+	server(unsigned short port){ 
+		this->_socket = { socket_type::stream };
+		this->_socket.bind(ip_address::loopback(), port);
 	}
 
-	void start() const {
-		_socket.listen(connection_number::max);
-
-	}
-
-	void accept() {
-		_client =  _socket.accept();
+	void start() const requires (protocol == ip_protocol::tcp) {
+		this->_socket.listen(connection_number::max);
 
 	}
 
-	socket_address get_client_address() const {
+	void accept() requires (protocol == ip_protocol::tcp) {
+		this->_client = this->_socket.accept();
 
-		if (_client) {
-			return _client.value().get_address();
+	}
+
+	socket_address get_client_address() const requires (protocol == ip_protocol::tcp)  {
+
+		if (this->_client) {
+			return this->_client.value().get_address();
 		}
 		else throw std::exception("?????");
 	
@@ -40,9 +58,9 @@ public:
 
 
 	template<size_t length> //можно сделать и для других типов но там паддинг систмнозависимый
-	std::thread recieve(std::function<void(std::string)> on_completed) const {
-		if (_client) {
-			return _client.value().recieve<length>(on_completed);
+	std::thread recieve(std::function<void(std::string)> on_completed) const requires (protocol == ip_protocol::tcp)  {
+		if (this->_client) {
+			return this->_client.value().recieve<length>(on_completed);
 		}
 		else throw std::exception("?????");
 	
@@ -50,29 +68,33 @@ public:
 
 
 	template<size_t length> //можно сделать и для других типов но там паддинг систмнозависимый
-	std::string recieve() const {
-		if (_client) {
-			return _client.value().recieve<length>();
+	std::string recieve() const requires (protocol == ip_protocol::tcp)  {
+		if (this->_client) {
+			return this->_client.value().recieve<length>();
 		}
 		else throw std::exception("?????");
 	}
  
-	std::thread send(std::string message, std::function<void()> on_completed) const {
-		if (_client) {
-			return _client.value().send(message, on_completed);
+	std::thread send(std::string message, std::function<void()> on_completed)  const requires (protocol == ip_protocol::tcp) {
+		if (this->_client) {
+			return this->_client.value().send(message, on_completed);
 		}
 		else throw std::exception("?????");
 	}
 
-	friend const server& operator << (const server& server, const std::string& message) {
-		server.send(message);
+	friend const server& operator << (const server& server, const std::string& message) requires (protocol == ip_protocol::tcp) {
+	    server.send(message);
 		return server;
 	}
 
-	void send(std::string message) const {
-		if (_client) {
-			_client.value().send(message);
+	void send(std::string message) const requires (protocol == ip_protocol::tcp)  {
+		if (this->_client) {
+			this->_client.value().send(message);
 		}
 		else throw std::exception("?????");
 	}
 };
+
+
+export using tcp_server = server<ip_protocol::tcp>;
+export using udp_server = server<ip_protocol::udp>;

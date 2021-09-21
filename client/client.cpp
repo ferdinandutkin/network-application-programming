@@ -1,5 +1,6 @@
 ﻿import client;
 import ip;
+import socket_base;
 
 #include <regex>
 #include <iostream>
@@ -24,7 +25,7 @@ int main()
 
 
     try {
-        client c = { 1234 };
+        tcp_client c = { 1234 };
         c.connect(1111, ip_address::loopback(), [&] {
 
             int i{};

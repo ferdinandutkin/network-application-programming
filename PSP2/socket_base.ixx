@@ -60,14 +60,16 @@ export enum class ip_protocol {
 
 
 
-export class socket_base {
+
+export template <ip_protocol protocol>
+
+class socket_base {
 
 
 	std::shared_ptr<wsa_wrapper> _wsa;
 
-
-
 protected:
+
 
 	SOCKET _wrapped;
 
@@ -88,7 +90,7 @@ public:
 		_wrapped = wrapped;
 	}
 
-	socket_base(socket_type type, ip_protocol protocol) : socket_base{} {
+	socket_base(socket_type type) : socket_base{} {
 		if (SOCKET sock = ::socket(PF_INET, std::to_underlying(type), std::to_underlying(protocol)); sock != INVALID_SOCKET) {
 
 			_wrapped = sock;
@@ -97,6 +99,46 @@ public:
 		else throw wsa_exception("invalid socket");
 
 	}
+
+
+	 
+
+
+
+	template<size_t length>
+	std::string recieve(socket_address from) const requires (protocol == ip_protocol::udp) {
+		char response[length + 1]{};
+
+		if (::recvfrom(this->wrapped, response, std::size(response), 0, reinterpret_cast<sockaddr*>(&from), sizeof sockaddr) == SOCKET_ERROR) {
+			throw wsa_exception(__func__);
+		}
+		
+		return { response };
+	}
+
+
+
+
+	template<size_t length>
+	std::string recieve(ip_address from_address, unsigned short from_port) const requires (protocol == ip_protocol::udp) {
+		return recieve(socket_address{ from_address, from_port });
+	}
+
+
+	void send(std::string message, socket_address from) const requires (protocol == ip_protocol::udp) {
+		if (::sendto(this->_wrapped, message.c_str(), message.size(), 0, reinterpret_cast<sockaddr*>(&from), sizeof sockaddr) == SOCKET_ERROR) {
+			throw wsa_exception(__func__);
+		}
+	}
+
+
+
+	void send(std::string message, ip_address to_address, unsigned short to_port) const requires (protocol == ip_protocol::udp) {
+		send(message, socket_address{ to_address, to_port });
+	}
+
+
+
 
 
 	void bind(ip_address address, unsigned short port) const {

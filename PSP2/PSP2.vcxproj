@@ -144,6 +144,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\server\host_base.ixx" />
     <ClCompile Include="client.ixx" />
     <ClCompile Include="client_socket.ixx">
       <TranslateIncludes Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</TranslateIncludes>
@@ -156,6 +157,7 @@
     <ClCompile Include="server_socket.ixx" />
     <ClCompile Include="server_socket_async.ixx" />
     <ClCompile Include="socket_base.ixx" />
+    <ClCompile Include="socket_base_async.ixx" />
     <ClCompile Include="wsa_exception.ixx" />
     <ClCompile Include="wsa_provider.ixx" />
     <ClCompile Include="wsa_wrapper.ixx" />

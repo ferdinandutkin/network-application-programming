@@ -150,9 +150,11 @@
     <ClCompile Include="..\PSP2\server_socket.ixx" />
     <ClCompile Include="..\PSP2\server_socket_async.ixx" />
     <ClCompile Include="..\PSP2\socket_base.ixx" />
+    <ClCompile Include="..\PSP2\socket_base_async.ixx" />
     <ClCompile Include="..\PSP2\wsa_exception.ixx" />
     <ClCompile Include="..\PSP2\wsa_provider.ixx" />
     <ClCompile Include="..\PSP2\wsa_wrapper.ixx" />
+    <ClCompile Include="host_base.ixx" />
     <ClCompile Include="server.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

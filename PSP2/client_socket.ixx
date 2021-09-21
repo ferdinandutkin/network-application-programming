@@ -14,26 +14,28 @@ import wsa_exception;
 
 
 
-export class client_socket : public socket_base {
-protected:
+export template <ip_protocol protocol>
+class client_socket : public socket_base<protocol> {
 
 
 
 public:
-	using socket_base::socket_base;
+	using socket_base<protocol>::socket_base;
+	
 
-	client_socket(SOCKET wrapped) : socket_base{ wrapped } {
+	client_socket(SOCKET wrapped) : socket_base<protocol>{ wrapped } {
 	}
 
-	client_socket() : socket_base{} {
+	client_socket() : socket_base<protocol>{} {
 	}
 
 
 	void send(std::string message) const {
-		if (::send(_wrapped, message.c_str(), message.size(), 0) == SOCKET_ERROR) {
+		if (::send(this->_wrapped, message.c_str(), message.size(), 0) == SOCKET_ERROR) {
 			throw wsa_exception(__func__);
 		}
 	}
+
 
 
 	
@@ -44,7 +46,7 @@ public:
 
 
 	void connect(socket_address address) const {
-		if (::connect(_wrapped, reinterpret_cast<sockaddr*>(&address), sizeof address) == SOCKET_ERROR) {
+		if (::connect(this->_wrapped, reinterpret_cast<sockaddr*>(&address), sizeof address) == SOCKET_ERROR) {
 			throw wsa_exception(__func__);
 		}
 	}
@@ -57,7 +59,7 @@ public:
 	template<size_t length> //можно сделать и для других типов но там паддинг систмнозависимый
 	std::string recieve() const {
 		char response[length + 1]{};
-		if (::recv(_wrapped, response, std::size(response), 0) == SOCKET_ERROR) {
+		if (::recv(this->_wrapped, response, std::size(response), 0) == SOCKET_ERROR) {
 			throw wsa_exception(__func__);
 		}
 		return { response };
