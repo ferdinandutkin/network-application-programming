@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{79f5f78d-e531-4a8a-a385-7d7a6ab10456}</ProjectGuid>
-    <RootNamespace>udpclient</RootNamespace>
+    <ProjectGuid>{cc9dab88-82f4-46a7-b4e4-c54f25df4c28}</ProjectGuid>
+    <RootNamespace>udpserver</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />

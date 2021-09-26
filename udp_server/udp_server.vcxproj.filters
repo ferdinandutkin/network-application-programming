@@ -15,10 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\PSP2\socket_base.ixx">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="..\PSP2\server_socket.ixx">
+    <ClCompile Include="Source.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="..\PSP2\server_socket_async.ixx">
@@ -57,7 +54,10 @@
     <ClCompile Include="..\PSP2\client_socket_async.ixx">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Source.cpp">
+    <ClCompile Include="..\PSP2\socket_base.ixx">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="..\PSP2\server_socket.ixx">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>

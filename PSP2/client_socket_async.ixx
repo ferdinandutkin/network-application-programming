@@ -33,18 +33,23 @@ public:
 	using socket_base_async<protocol>::send;
 	using socket_base_async<protocol>::recieve;
 	 
-	client_socket_async(SOCKET wrapped) : client_socket{ wrapped } {
+	client_socket_async(SOCKET wrapped) : client_socket<protocol>{ wrapped }, socket_base_async<protocol>{ wrapped } {
+		this->socket_base_async<protocol>::_wrapped = this->client_socket<protocol>::_wrapped;
 	}
 
  
-	client_socket_async(client_socket<protocol> base) : client_socket<protocol>{ base.operator SOCKET() } {
+	client_socket_async(client_socket<protocol> base) : client_socket_async<protocol>{ base.operator SOCKET() } {
 
 	}
 
 	client_socket_async() : client_socket<protocol>{} {
+		this->socket_base_async<protocol>::_wrapped = this->client_socket<protocol>::_wrapped;
 	}
 
-
+ 
+	client_socket_async(socket_type type) : client_socket<protocol>{ type } {
+		this->socket_base_async<protocol>::_wrapped = this->client_socket<protocol>::_wrapped;
+	}
 
 
 	std::thread send(std::string message, std::function<void()> on_completed) const {

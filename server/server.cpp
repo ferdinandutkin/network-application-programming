@@ -10,7 +10,9 @@ import socket_base;
 int main() {
 
 	try {
-		server<ip_protocol::tcp> s = { 1111 };
+		tcp_server s = { 1111 };
+		 
+		constexpr int message_len = 22;
 
 		s.start();
 
@@ -29,12 +31,10 @@ int main() {
 			{
 
 
-				s.recieve<22>([&](std::string message) {
+				s.recieve<message_len>([&](std::string message) {
+					const bool empty = message.empty();
 
-
-					bool empty = message.empty();
-
-					std::cout << std::format("recieved: {}", empty ? "empty message" : message) << std::endl;
+					std::cout << std::format("received: {}", empty ? "empty message" : message) << std::endl;
 
 					if (empty) {
 						done = true;

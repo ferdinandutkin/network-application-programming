@@ -144,13 +144,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\server\host_base.ixx" />
     <ClCompile Include="client.ixx" />
     <ClCompile Include="client_socket.ixx">
       <TranslateIncludes Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</TranslateIncludes>
     </ClCompile>
     <ClCompile Include="client_socket_async.ixx" />
     <ClCompile Include="endian.ixx" />
+    <ClCompile Include="host_base.ixx" />
     <ClCompile Include="ip.ixx" />
     <ClCompile Include="PSP2.cpp" />
     <ClCompile Include="server.ixx" />
