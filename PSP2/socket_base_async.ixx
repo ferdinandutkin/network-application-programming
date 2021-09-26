@@ -13,45 +13,36 @@ export module socket_base_async;
 
 export template <ip_protocol protocol>
 class socket_base_async : public socket_base<protocol> {
+	public:
 
-};
+		using socket_base<protocol>::recieve;
+		using socket_base<protocol>::send;
+		using socket_base<protocol>::socket_base;
 
-export template <>
-class socket_base_async<ip_protocol::udp> : socket_base<ip_protocol::udp> {
-
-public:
 
 	template<size_t length>
-	std::thread recieve(socket_address address, std::function<void(std::string)> on_completed) const {
-		return std::thread{ [=] {
-		   auto res = this->socket_base<ip_protocol::udp>::recieve<length>(address);
+	std::thread recieve(socket_address& from, std::function<void(std::string)> on_completed) const requires (protocol == ip_protocol::udp) {
+		return std::thread{ [=, &from] {
+		   std::string res = this->socket_base<protocol>::recieve<length>(from);
 		   on_completed(res);
 
 		   } };
 	}
 
 
-	template<size_t length>
-	std::thread recieve(ip_address to_address, unsigned short to_port, std::function<void(std::string)> on_completed) const {
-		return recieve(socket_address{ to_address, to_port }, on_completed);
-	}
+	 
 
 
 
-	std::thread send(std::string message, socket_address to, std::function<void()> on_completed) const {
+	std::thread send(std::string message, socket_address& to, std::function<void()> on_completed) const requires(protocol == ip_protocol::udp) {
 
 		return std::thread{ [=] {
-			this->socket_base::send(message, to);
+			this->socket_base<protocol>::send(message, to);
 			on_completed();
 
 			} };
 	}
 
-	std::thread send(std::string message, ip_address to_address, unsigned short to_port, std::function<void()> on_completed) const {
-		return send(message, socket_address{ to_address, to_port }, on_completed);
-	}
-
-
-
+	 
 
 };

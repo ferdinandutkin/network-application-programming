@@ -14,7 +14,7 @@ int extract_digit(const std::string& source) {
     std::smatch match_result;
     std::regex_search(source, match_result, match_digits);
 
-    int digit = std::stoi(match_result.str());
+    const int digit = std::stoi(match_result.str());
 
     return digit;
 }
@@ -25,20 +25,25 @@ int main()
 
 
     try {
+
         tcp_client c = { 1234 };
+
+        constexpr int message_len = 22;
+
+        const auto empty_message = std::string(message_len, '\0');
         c.connect(1111, ip_address::loopback(), [&] {
 
             int i{};
-            const char format_string[] = "Hello from client {:03}!";
+            constexpr char format_string[] = "Hello from client {:03}!";
             while (true) {
 
-                auto message = (i < 100) ? std::format(format_string, i) : std::string(22, '\0');
+                auto message = (i < 100) ? std::format(format_string, i) : empty_message;
 
                 c << message;
                 std::cout << message << std::endl;
 
-                c.recieve<22>([&](std::string recieved) {
-                    i = extract_digit(recieved);
+                c.recieve<message_len>([&](std::string received) {
+                    i = extract_digit(received);
                     i++;
                     }).join();
 

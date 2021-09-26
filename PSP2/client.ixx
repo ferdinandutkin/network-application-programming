@@ -16,51 +16,57 @@ import ip;
 
 export template<ip_protocol protocol>
 class client : public host_base<protocol, client_socket_async> {
- 
+
 
 public:
 
+	using host_base<protocol, client_socket_async>::recieve;
+	using host_base<protocol, client_socket_async>::send;
 
-	client(unsigned short port)   {
-		this->_socket = { socket_type::stream };
+	client(unsigned short port) : client{} {	
 		this->_socket.bind(ip_address::loopback(), port);
 	}
 
+	client() {
+		auto type = protocol == ip_protocol::tcp ? socket_type::stream : socket_type::datagram;
+		this->_socket = client_socket_async<protocol>{ type };
+	}
 
-	void connect(unsigned short port, ip_address address = ip_address::loopback()) const {
+
+	void connect(unsigned short port, ip_address address = ip_address::loopback()) const  requires (protocol == ip_protocol::tcp) {
 		this->_socket.connect({ address, port });
 	}
 
-	void connect(socket_address server_address) const {	 
+	void connect(socket_address server_address) const  requires (protocol == ip_protocol::tcp) {
 		this->_socket.connect(server_address);
 	}
 
 
-	std::thread connect(socket_address server_address, std::function<void()> on_completed) const {
+	std::thread connect(socket_address server_address, std::function<void()> on_completed) const  requires (protocol == ip_protocol::tcp) {
 		return this->_socket.connect(server_address, on_completed);
 	}
 
 
-	std::thread  connect(unsigned short port, ip_address address, std::function<void()> on_completed) const {
+	std::thread  connect(unsigned short port, ip_address address, std::function<void()> on_completed) const  requires (protocol == ip_protocol::tcp) {
 		return this->_socket.connect({ address, port }, on_completed);
 	}
 
 
 
 
-	friend const client& operator << (const client& client, const std::string& message) {
+	friend const client& operator << (const client& client, const std::string& message)  requires (protocol == ip_protocol::tcp) {
 		client.send(message);
 		return client;
 	}
 
-	void send(std::string message) const {
+	void send(std::string message) const  requires (protocol == ip_protocol::tcp) {
 		
 		this->_socket.send(message);
 		
 	}
 
 
-	std::thread send(std::string message, std::function<void()> on_completed) const {
+	std::thread send(std::string message, std::function<void()> on_completed) const requires (protocol == ip_protocol::tcp) {
 		
 		 return this->_socket.send(message, on_completed);
 
@@ -69,7 +75,7 @@ public:
 
 
 	template <size_t length>
-	std::string recieve() const {
+	std::string recieve() const requires (protocol == ip_protocol::tcp) {
 		 
 		return this->_socket.recieve<length>();
 		 
@@ -78,7 +84,7 @@ public:
 
 
 	template<size_t length> 
-	std::thread recieve(std::function<void(std::string)> on_completed) const {
+	std::thread recieve(std::function<void(std::string)> on_completed) const requires (protocol == ip_protocol::tcp) {
 		 
 		return this->_socket.recieve<length>(on_completed);
 	 

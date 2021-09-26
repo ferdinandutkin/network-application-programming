@@ -32,8 +32,14 @@ class server  : public server_base<protocol> {
 	
 public:
 
+	using host_base<protocol, server_socket_async>::recieve;
+	using host_base<protocol, server_socket_async>::send;
+
 	server(unsigned short port){ 
-		this->_socket = { socket_type::stream };
+
+		auto type = protocol == ip_protocol::tcp ? socket_type::stream : socket_type::datagram;
+
+		this->_socket = { type };
 		this->_socket.bind(ip_address::loopback(), port);
 	}
 

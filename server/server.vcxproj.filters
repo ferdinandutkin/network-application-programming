@@ -54,10 +54,10 @@
     <ClCompile Include="..\PSP2\server_socket_async.ixx">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="host_base.ixx">
+    <ClCompile Include="..\PSP2\socket_base_async.ixx">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="..\PSP2\socket_base_async.ixx">
+    <ClCompile Include="..\PSP2\host_base.ixx">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>

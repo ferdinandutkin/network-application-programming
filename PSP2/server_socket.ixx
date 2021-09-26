@@ -12,7 +12,7 @@ import client_socket;
 import wsa_exception;
 
 
-export enum connection_number {
+export enum class connection_number {
 	max = SOMAXCONN
 };
 
@@ -22,6 +22,7 @@ class server_socket : public socket_base<protocol> {
 
 public:
 	using socket_base<protocol>::socket_base;
+
 
 	void listen(std::variant<connection_number, int> backlog = connection_number::max) const {
 		int backlog_value;

@@ -20,6 +20,10 @@ export class socket_address {
 	sockaddr_in _wrapped;
 public:
 
+
+	socket_address() : _wrapped{} {
+	}
+
 	socket_address(sockaddr_in wrapped) : _wrapped{ wrapped } {
 	}
 	socket_address(ip_address address, unsigned short port) {
@@ -71,7 +75,7 @@ class socket_base {
 protected:
 
 
-	SOCKET _wrapped;
+	SOCKET _wrapped{};
 
 	socket_base() : _wsa{ wsa_provider::get_instance() } {
 
@@ -103,30 +107,27 @@ public:
 
 	 
 
+ 
 
 
 	template<size_t length>
-	std::string recieve(socket_address from) const requires (protocol == ip_protocol::udp) {
+	std::string recieve(socket_address& from) const requires (protocol == ip_protocol::udp) {
 		char response[length + 1]{};
 
-		if (::recvfrom(this->wrapped, response, std::size(response), 0, reinterpret_cast<sockaddr*>(&from), sizeof sockaddr) == SOCKET_ERROR) {
+		int from_len = sizeof sockaddr_in;
+
+		if (::recvfrom(this->_wrapped, response, std::size(response), 0, reinterpret_cast<sockaddr*>(&from), &from_len) == SOCKET_ERROR) {
 			throw wsa_exception(__func__);
 		}
 		
 		return { response };
 	}
 
+ 
 
-
-
-	template<size_t length>
-	std::string recieve(ip_address from_address, unsigned short from_port) const requires (protocol == ip_protocol::udp) {
-		return recieve(socket_address{ from_address, from_port });
-	}
-
-
-	void send(std::string message, socket_address from) const requires (protocol == ip_protocol::udp) {
-		if (::sendto(this->_wrapped, message.c_str(), message.size(), 0, reinterpret_cast<sockaddr*>(&from), sizeof sockaddr) == SOCKET_ERROR) {
+	void send(std::string message, socket_address to) const requires (protocol == ip_protocol::udp) {
+		if (::sendto(this->_wrapped, message.c_str(), message.size(), 0, reinterpret_cast<sockaddr*>(&to), sizeof sockaddr) == SOCKET_ERROR) {
+			std::cout << WSAGetLastError();
 			throw wsa_exception(__func__);
 		}
 	}
@@ -158,8 +159,15 @@ public:
 
 	void bind(socket_address address) const {
 		if (::bind(_wrapped, reinterpret_cast<sockaddr*>(&address), sizeof sockaddr_in) == SOCKET_ERROR) {
-			std::cerr << "RIP" << WSAGetLastError() << std::endl;
+			throw wsa_exception(__func__);
 		}
  
+	}
+
+
+	virtual ~socket_base() {
+		//::closesocket(_wrapped);
+		//blyat)))))))))))))))
+	 
 	}
 };

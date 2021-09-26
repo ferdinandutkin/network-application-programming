@@ -54,10 +54,10 @@
     <ClCompile Include="server_socket_async.ixx">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="..\server\host_base.ixx">
+    <ClCompile Include="socket_base_async.ixx">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="socket_base_async.ixx">
+    <ClCompile Include="host_base.ixx">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
