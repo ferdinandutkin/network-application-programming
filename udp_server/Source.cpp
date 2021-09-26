@@ -57,7 +57,7 @@ int main()
 		}
 		
 	}
-	catch (exception& e) {
+	catch (std::exception& e) {
 		std::cout << e.what();
 	}
 
