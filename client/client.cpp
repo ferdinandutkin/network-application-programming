@@ -42,7 +42,7 @@ int main()
                 c << message;
                 std::cout << message << std::endl;
 
-                c.recieve<message_len>([&](std::string received) {
+                c.receive<message_len>([&](std::string received) {
                     i = extract_digit(received);
                     i++;
                     }).join();

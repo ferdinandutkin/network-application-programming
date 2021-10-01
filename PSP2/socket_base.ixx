@@ -3,7 +3,7 @@ module;
 #include <memory>
 #include <WinSock2.h>
 #include <iostream>
-
+#include <chrono>
 
 export module socket_base;
 
@@ -11,8 +11,10 @@ import wsa_exception;
 import wsa_wrapper;
 import endian;
 import wsa_provider;
+import socket_options;
 import ip;
 
+export using port_t = unsigned short;
 
 
 export class socket_address {
@@ -26,14 +28,19 @@ public:
 
 	socket_address(sockaddr_in wrapped) : _wrapped{ wrapped } {
 	}
-	socket_address(ip_address address, unsigned short port) {
+	socket_address(ip_address address, port_t port) {
 		_wrapped = { PF_INET,  to_big_endian(port), {.S_un = {.S_addr = address.as_big_endian().operator uint32_t()}} };
 	}
 
 
 	friend std::ostream& operator << (std::ostream& os, const socket_address& a) {
-		os << a.get_ip() << ':' << a.get_port();
+		os << a.operator std::string();
 		return os;
+	}
+	
+
+	operator std::string() const {
+		return get_ip().operator std::string() + ':' + std::to_string(get_port());
 	}
 
 	
@@ -47,7 +54,7 @@ public:
 		return {_wrapped.sin_addr.S_un.S_addr};
 	}
 
-	unsigned short get_port() const {
+	port_t get_port() const {
 		return _wrapped.sin_port;
 	}
 
@@ -81,10 +88,41 @@ protected:
 
 	}
 
+	void set_socket_option(int level, int name, auto value) const {
+		if (::setsockopt(_wrapped, level, name, reinterpret_cast<const char*>(&value), sizeof value) < 0)
+			throw wsa_exception(__func__);
+	}
+	
+	void set_broadcast_option(bool value) const {
+		set_socket_option(SOL_SOCKET, SO_BROADCAST, value? 1 : 0);
+	 		
+	}
+
+	void set_receive_timeout_option(std::chrono::milliseconds timeout) const {
+		timeval tv;
+		tv.tv_sec = timeout.count(); //?????????
+		set_socket_option(SOL_SOCKET, SO_RCVTIMEO, tv);
+
+	}
+
+	void set_send_timeout_option(std::chrono::milliseconds timeout) const  {
+		timeval tv;
+		tv.tv_sec = timeout.count(); //?????????
+		set_socket_option(SOL_SOCKET, SO_SNDTIMEO, tv);
+	}
+
+	void set_socket_options(socket_options options) const {
+		set_broadcast_option(options.broadcast);
+		set_send_timeout_option(options.send_timeout);
+		set_receive_timeout_option(options.receive_timeout);
+	}
 
 	
 public:
 
+	void set_options(socket_options options) const {
+		set_socket_options(options);
+	}
 
 	operator SOCKET() const {
 		return _wrapped;
@@ -104,14 +142,16 @@ public:
 
 	}
 
-
+	socket_base(socket_type type, socket_options options) : socket_base{type} {
+		set_options(options);
+	}
 	 
 
  
 
 
 	template<size_t length>
-	std::string recieve(socket_address& from) const requires (protocol == ip_protocol::udp) {
+	std::string receive(socket_address& from) const requires (protocol == ip_protocol::udp) {
 		char response[length + 1]{};
 
 		int from_len = sizeof sockaddr_in;
@@ -127,7 +167,6 @@ public:
 
 	void send(std::string message, socket_address to) const requires (protocol == ip_protocol::udp) {
 		if (::sendto(this->_wrapped, message.c_str(), message.size(), 0, reinterpret_cast<sockaddr*>(&to), sizeof sockaddr) == SOCKET_ERROR) {
-			std::cout << WSAGetLastError();
 			throw wsa_exception(__func__);
 		}
 	}
@@ -142,7 +181,7 @@ public:
 
 
 
-	void bind(ip_address address, unsigned short port) const {
+	void bind(ip_address address, port_t port) const {
 		bind(socket_address{ address, port });
 	}
 

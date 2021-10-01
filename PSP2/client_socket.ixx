@@ -57,7 +57,7 @@ public:
 
 
 	template<size_t length> //можно сделать и для других типов но там паддинг систмнозависимый
-	std::string recieve() const {
+	std::string receive() const {
 		char response[length + 1]{};
 		if (::recv(this->_wrapped, response, std::size(response), 0) == SOCKET_ERROR) {
 			throw wsa_exception(__func__);

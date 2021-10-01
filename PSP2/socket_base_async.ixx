@@ -15,15 +15,15 @@ export template <ip_protocol protocol>
 class socket_base_async : public socket_base<protocol> {
 	public:
 
-		using socket_base<protocol>::recieve;
+		using socket_base<protocol>::receive;
 		using socket_base<protocol>::send;
 		using socket_base<protocol>::socket_base;
 
 
 	template<size_t length>
-	std::thread recieve(socket_address& from, std::function<void(std::string)> on_completed) const requires (protocol == ip_protocol::udp) {
+	std::thread receive(socket_address& from, std::function<void(std::string)> on_completed) const requires (protocol == ip_protocol::udp) {
 		return std::thread{ [=, &from] {
-		   std::string res = this->socket_base<protocol>::recieve<length>(from);
+		   std::string res = this->socket_base<protocol>::receive<length>(from);
 		   on_completed(res);
 
 		   } };

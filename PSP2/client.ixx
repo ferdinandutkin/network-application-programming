@@ -20,10 +20,10 @@ class client : public host_base<protocol, client_socket_async> {
 
 public:
 
-	using host_base<protocol, client_socket_async>::recieve;
+	using host_base<protocol, client_socket_async>::receive;
 	using host_base<protocol, client_socket_async>::send;
 
-	client(unsigned short port) : client{} {	
+	client(port_t port) : client{} {
 		this->_socket.bind(ip_address::loopback(), port);
 	}
 
@@ -32,8 +32,7 @@ public:
 		this->_socket = client_socket_async<protocol>{ type };
 	}
 
-
-	void connect(unsigned short port, ip_address address = ip_address::loopback()) const  requires (protocol == ip_protocol::tcp) {
+	void connect(port_t port, ip_address address = ip_address::loopback()) const  requires (protocol == ip_protocol::tcp) {
 		this->_socket.connect({ address, port });
 	}
 
@@ -75,18 +74,18 @@ public:
 
 
 	template <size_t length>
-	std::string recieve() const requires (protocol == ip_protocol::tcp) {
+	std::string receive() const requires (protocol == ip_protocol::tcp) {
 		 
-		return this->_socket.recieve<length>();
+		return this->_socket.receive<length>();
 		 
 	}
 
 
 
 	template<size_t length> 
-	std::thread recieve(std::function<void(std::string)> on_completed) const requires (protocol == ip_protocol::tcp) {
+	std::thread receive(std::function<void(std::string)> on_completed) const requires (protocol == ip_protocol::tcp) {
 		 
-		return this->_socket.recieve<length>(on_completed);
+		return this->_socket.receive<length>(on_completed);
 	 
 	}
 

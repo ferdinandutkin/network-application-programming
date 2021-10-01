@@ -60,5 +60,8 @@
     <ClCompile Include="..\PSP2\server_socket.ixx">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="..\PSP2\socket_options.ixx">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

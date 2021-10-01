@@ -32,7 +32,7 @@ int main()
 
 				socket_address client_address;
 
-				server.recieve<message_len>(client_address, [&](std::string message) {
+				server.receive<message_len>(client_address, [&](std::string message) {
 					const bool is_empty = message.empty();
 
 					std::cout << std::format("received: {}", is_empty ? "empty message" : message) << std::endl;

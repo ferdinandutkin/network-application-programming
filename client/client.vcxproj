@@ -152,6 +152,7 @@
     <ClCompile Include="..\PSP2\server_socket_async.ixx" />
     <ClCompile Include="..\PSP2\socket_base.ixx" />
     <ClCompile Include="..\PSP2\socket_base_async.ixx" />
+    <ClCompile Include="..\PSP2\socket_options.ixx" />
     <ClCompile Include="..\PSP2\wsa_exception.ixx" />
     <ClCompile Include="..\PSP2\wsa_provider.ixx" />
     <ClCompile Include="..\PSP2\wsa_wrapper.ixx" />

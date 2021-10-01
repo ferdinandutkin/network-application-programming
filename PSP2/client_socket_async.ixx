@@ -23,15 +23,17 @@ public:
 
 	using socket_base<protocol>::get_address;
 	using socket_base<protocol>::bind;
+	using socket_base<protocol>::set_options;
 
 	using client_socket<protocol>::client_socket;
 	using client_socket<protocol>::connect;
-	using client_socket<protocol>::recieve;
+	using client_socket<protocol>::receive;
 	using client_socket<protocol>::send;
  
 
 	using socket_base_async<protocol>::send;
-	using socket_base_async<protocol>::recieve;
+	using socket_base_async<protocol>::receive;
+
 	 
 	client_socket_async(SOCKET wrapped) : client_socket<protocol>{ wrapped }, socket_base_async<protocol>{ wrapped } {
 		this->socket_base_async<protocol>::_wrapped = this->client_socket<protocol>::_wrapped;
@@ -80,9 +82,9 @@ public:
 
 
 	template<size_t length> 
-	std::thread recieve(std::function<void(std::string)> on_completed) const {
+	std::thread receive(std::function<void(std::string)> on_completed) const {
 		return std::thread{ [=] {
-		   auto res = this->client_socket<protocol>::recieve<length>();
+		   auto res = this->client_socket<protocol>::receive<length>();
 		   on_completed(res);
 
 		   } };

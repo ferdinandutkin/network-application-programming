@@ -32,10 +32,10 @@ class server  : public server_base<protocol> {
 	
 public:
 
-	using host_base<protocol, server_socket_async>::recieve;
+	using host_base<protocol, server_socket_async>::receive;
 	using host_base<protocol, server_socket_async>::send;
 
-	server(unsigned short port){ 
+	server(port_t port, ip_address address = ip_address::loopback()) {
 
 		auto type = protocol == ip_protocol::tcp ? socket_type::stream : socket_type::datagram;
 
@@ -64,9 +64,9 @@ public:
 
 
 	template<size_t length> //можно сделать и для других типов но там паддинг систмнозависимый
-	std::thread recieve(std::function<void(std::string)> on_completed) const requires (protocol == ip_protocol::tcp)  {
+	std::thread receive(std::function<void(std::string)> on_completed) const requires (protocol == ip_protocol::tcp)  {
 		if (this->_client) {
-			return this->_client.value().recieve<length>(on_completed);
+			return this->_client.value().receive<length>(on_completed);
 		}
 		else throw std::exception("?????");
 	
@@ -74,9 +74,9 @@ public:
 
 
 	template<size_t length> //можно сделать и для других типов но там паддинг систмнозависимый
-	std::string recieve() const requires (protocol == ip_protocol::tcp)  {
+	std::string receive() const requires (protocol == ip_protocol::tcp)  {
 		if (this->_client) {
-			return this->_client.value().recieve<length>();
+			return this->_client.value().receive<length>();
 		}
 		else throw std::exception("?????");
 	}

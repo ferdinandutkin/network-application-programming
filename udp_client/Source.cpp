@@ -47,7 +47,7 @@ int main()
 
 			client.send(message, server_address, [&]
 			{
-					client.recieve<message_len>(server_address, [&] (std::string received)
+					client.receive<message_len>(server_address, [&] (std::string received)
 					{
 							i = extract_digit(received);
 							i++;

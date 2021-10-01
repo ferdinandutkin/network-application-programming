@@ -23,13 +23,14 @@ class server_socket_async : public server_socket<protocol>, public socket_base_a
 public:
 	using socket_base<protocol>::get_address;
 	using socket_base<protocol>::bind;
+	using socket_base<protocol>::set_options;
 
 	using server_socket<protocol>::server_socket;
 	using server_socket<protocol>::accept;
 
 
 	using socket_base_async<protocol>::send;
-	using socket_base_async<protocol>::recieve;
+	using socket_base_async<protocol>::receive;
 
 
 

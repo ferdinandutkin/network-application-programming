@@ -31,7 +31,7 @@ int main() {
 			{
 
 
-				s.recieve<message_len>([&](std::string message) {
+				s.receive<message_len>([&](std::string message) {
 					const bool empty = message.empty();
 
 					std::cout << std::format("received: {}", empty ? "empty message" : message) << std::endl;

@@ -158,6 +158,7 @@
     <ClCompile Include="server_socket_async.ixx" />
     <ClCompile Include="socket_base.ixx" />
     <ClCompile Include="socket_base_async.ixx" />
+    <ClCompile Include="socket_options.ixx" />
     <ClCompile Include="wsa_exception.ixx" />
     <ClCompile Include="wsa_provider.ixx" />
     <ClCompile Include="wsa_wrapper.ixx" />
