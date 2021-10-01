@@ -35,12 +35,11 @@ int main() {
 	const std::string server_name = "Hello";
 
 
-	const udp_server server = { server_port, ip_address::broadcast()};
+	const udp_server server = { server_port, ip_address::any()};
 
-	const socket_options options = { .broadcast = true,  .send_timeout = 600ms, .receive_timeout = 600ms, };
+	const socket_options options = { .send_timeout = 600ms, .receive_timeout = 600ms, };
 
-	server.set_options(options);
-
+ 
 	
 	while(true)
 	{
