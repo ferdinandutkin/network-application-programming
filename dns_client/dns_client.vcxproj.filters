@@ -15,55 +15,55 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="PSP2.cpp">
+    <ClCompile Include="dns_client.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="wsa_wrapper.ixx">
+    <ClCompile Include="..\PSP2\client_socket.ixx">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="wsa_provider.ixx">
+    <ClCompile Include="..\PSP2\socket_base_async.ixx">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="socket_base.ixx">
+    <ClCompile Include="..\PSP2\wsa_exception.ixx">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="endian.ixx">
+    <ClCompile Include="..\PSP2\server_socket.ixx">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="ip.ixx">
+    <ClCompile Include="..\PSP2\ip.ixx">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="client_socket.ixx">
+    <ClCompile Include="..\PSP2\endian.ixx">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="server_socket.ixx">
+    <ClCompile Include="..\PSP2\wsa_provider.ixx">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="wsa_exception.ixx">
+    <ClCompile Include="..\PSP2\wsa_wrapper.ixx">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="server.ixx">
+    <ClCompile Include="..\PSP2\dns.ixx">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="client.ixx">
+    <ClCompile Include="..\PSP2\server.ixx">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="client_socket_async.ixx">
+    <ClCompile Include="..\PSP2\socket_base.ixx">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="server_socket_async.ixx">
+    <ClCompile Include="..\PSP2\host_base.ixx">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="socket_base_async.ixx">
+    <ClCompile Include="..\PSP2\client.ixx">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="host_base.ixx">
+    <ClCompile Include="..\PSP2\socket_options.ixx">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="socket_options.ixx">
+    <ClCompile Include="..\PSP2\client_socket_async.ixx">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="dns.ixx">
+    <ClCompile Include="..\PSP2\server_socket_async.ixx">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>

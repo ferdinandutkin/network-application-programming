@@ -21,10 +21,9 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{af4808c9-32f7-430d-9c91-0b00c1e3afac}</ProjectGuid>
-    <RootNamespace>PSP2</RootNamespace>
+    <ProjectGuid>{cc87fcb8-cd05-4e1d-84a0-b9dce491991d}</ProjectGuid>
+    <RootNamespace>dnsclient</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>socket lib</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -79,7 +78,6 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <AllProjectBMIsArePublic>true</AllProjectBMIsArePublic>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -90,8 +88,6 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
-      <EnableModules>true</EnableModules>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -145,25 +141,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="client.ixx" />
-    <ClCompile Include="client_socket.ixx">
-      <TranslateIncludes Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</TranslateIncludes>
-    </ClCompile>
-    <ClCompile Include="client_socket_async.ixx" />
-    <ClCompile Include="dns.ixx" />
-    <ClCompile Include="endian.ixx" />
-    <ClCompile Include="host_base.ixx" />
-    <ClCompile Include="ip.ixx" />
-    <ClCompile Include="PSP2.cpp" />
-    <ClCompile Include="server.ixx" />
-    <ClCompile Include="server_socket.ixx" />
-    <ClCompile Include="server_socket_async.ixx" />
-    <ClCompile Include="socket_base.ixx" />
-    <ClCompile Include="socket_base_async.ixx" />
-    <ClCompile Include="socket_options.ixx" />
-    <ClCompile Include="wsa_exception.ixx" />
-    <ClCompile Include="wsa_provider.ixx" />
-    <ClCompile Include="wsa_wrapper.ixx" />
+    <ClCompile Include="..\PSP2\client.ixx" />
+    <ClCompile Include="..\PSP2\client_socket.ixx" />
+    <ClCompile Include="..\PSP2\client_socket_async.ixx" />
+    <ClCompile Include="..\PSP2\dns.ixx" />
+    <ClCompile Include="..\PSP2\endian.ixx" />
+    <ClCompile Include="..\PSP2\host_base.ixx" />
+    <ClCompile Include="..\PSP2\ip.ixx" />
+    <ClCompile Include="..\PSP2\server.ixx" />
+    <ClCompile Include="..\PSP2\server_socket.ixx" />
+    <ClCompile Include="..\PSP2\server_socket_async.ixx" />
+    <ClCompile Include="..\PSP2\socket_base.ixx" />
+    <ClCompile Include="..\PSP2\socket_base_async.ixx" />
+    <ClCompile Include="..\PSP2\socket_options.ixx" />
+    <ClCompile Include="..\PSP2\wsa_exception.ixx" />
+    <ClCompile Include="..\PSP2\wsa_provider.ixx" />
+    <ClCompile Include="..\PSP2\wsa_wrapper.ixx" />
+    <ClCompile Include="dns_client.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
