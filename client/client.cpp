@@ -26,18 +26,18 @@ int main()
 
     try {
 
-        tcp_client c = { 1234 };
+        tcp_client c;
 
-        constexpr int message_len = 22;
+        constexpr int message_len = 24;
 
         const auto empty_message = std::string(message_len, '\0');
         c.connect(1111, ip_address::loopback(), [&] {
 
             int i{};
-            constexpr char format_string[] = "Hello from client {:03}!";
+            constexpr char format_string[] = "Hello from client {:05}!";
             while (true) {
 
-                auto message = (i < 100) ? std::format(format_string, i) : empty_message;
+                auto message = (i < 10000) ? std::format(format_string, i) : empty_message;
 
                 c << message;
                 std::cout << message << std::endl;

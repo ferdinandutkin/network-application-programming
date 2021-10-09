@@ -12,7 +12,7 @@ int main() {
 	try {
 		tcp_server s = { 1111 };
 		 
-		constexpr int message_len = 22;
+		constexpr int message_len = 24;
 
 		s.start();
 
@@ -27,27 +27,39 @@ int main() {
 
 			bool done{};
 
+
 			while (not done)
 			{
 
+				try
+				{
 
-				s.receive<message_len>([&](std::string message) {
-					const bool empty = message.empty();
+					    auto message = s.receive<message_len>();
+					 
+						const bool empty = message.empty();
 
-					std::cout << std::format("received: {}", empty ? "empty message" : message) << std::endl;
+						std::cout << std::format("received: {}", empty ? "empty message" : message) << std::endl;
 
-					if (empty) {
-						done = true;
-						return;
-					}
+						if (empty) {
+							done = true;
+							break;
+						}
+					
+					    s << message;
+						
+						
+						done = empty;
 
-					s << message;
+						std::cout << std::format("sent: {}", message) << std::endl;
+						
 
-					done = empty;
-
-					std::cout << std::format("sent: {}", message) << std::endl;
-					}).join();
-
+				}
+				catch (std::exception& e)
+				{
+					std::cout << e.what() << std::endl;
+					break;
+				}
+			
 			}
 		}
 		

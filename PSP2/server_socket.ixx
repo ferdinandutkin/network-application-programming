@@ -33,7 +33,7 @@ public:
 			backlog_value = std::to_underlying(std::get<connection_number>(backlog));
 		}
 		if (::listen(this->_wrapped, backlog_value) == SOCKET_ERROR) {
-			throw wsa_exception("listen");
+			throw wsa_exception(__func__);
 
 		}
 	}
@@ -45,7 +45,7 @@ public:
 		if (client_socket<protocol> client = { ::accept(*this, nullptr, nullptr) }; client != INVALID_SOCKET) {
 			return client;
 		}
-		else throw wsa_exception("accept");
+		else throw wsa_exception(__func__);
 	}
 
 };

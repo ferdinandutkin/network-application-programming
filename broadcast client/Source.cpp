@@ -7,6 +7,7 @@ import host_base;
 import ip;
 #include <iostream>
 #include <string>
+#include <WinSock2.h>
 #include  <format>
 #include  <chrono>
 
@@ -34,24 +35,26 @@ int main() {
 		 
 		const udp_client client;
 
-		const port_t server_port = 344;
+		const port_t server_port = 2000;
 		const std::string server_name = "Hello";
 
 		const socket_options options = { .broadcast = true};
 
 		client.set_options(options);
 
-		while (true)
+		socket_address server_address;
+		if (get_server(client, server_name, server_port, server_address))
 		{
-			socket_address server_address;
-			if (get_server(client, server_name, server_port, server_address))
-			{
-				std::cout << std::format("Got server {}({})", server_name, server_address.operator std::string());
-			}
+			std::cout << std::format("Got server {} ({})", server_name, server_address.operator std::string()) << std::endl;
 		}
+		
 	}
 	catch (std::exception& exception)
 	{
-		std::cout << exception.what();
+		std::cout << exception.what() << std::endl;
 	}
+
+	 
+
+
 }

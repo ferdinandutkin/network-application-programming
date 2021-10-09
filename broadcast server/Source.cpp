@@ -5,6 +5,7 @@ import wsa_exception;
 #include <iostream>
 #include <string>
 #include <chrono>
+#include <WinSock2.h>
 
 
 bool get_request_from_client(const udp_server& socket, const std::string& name, socket_address& from) {
@@ -31,13 +32,13 @@ void put_answer_to_client(const udp_server& socket, const std::string& message, 
 int main() {
 	using namespace std::literals::chrono_literals;
 
-	const port_t server_port = 344;
+	const port_t server_port = 2000;
 	const std::string server_name = "Hello";
 
 
 	const udp_server server = { server_port, ip_address::any()};
 
-	const socket_options options = { .send_timeout = 600ms, .receive_timeout = 600ms, };
+	//const socket_options options = { .send_timeout = 600ms, .receive_timeout = 600ms, };
 
  
 	
@@ -47,7 +48,7 @@ int main() {
 
 		if (get_request_from_client(server, server_name, client_address))
 		{
-			std::cout << "called";
+			std::cout << "called" << std::endl;
 			
 			put_answer_to_client(server, server_name, client_address);
 		}

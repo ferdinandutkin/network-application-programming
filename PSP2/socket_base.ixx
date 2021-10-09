@@ -29,7 +29,7 @@ public:
 	socket_address(sockaddr_in wrapped) : _wrapped{ wrapped } {
 	}
 	socket_address(ip_address address, port_t port) {
-		_wrapped = { PF_INET,  to_big_endian(port), {.S_un = {.S_addr = address.as_big_endian().operator uint32_t()}} };
+		_wrapped = { PF_INET,  byte_swap(port), {.S_un = {.S_addr = address.as_big_endian().operator uint32_t()}} };
 	}
 
 

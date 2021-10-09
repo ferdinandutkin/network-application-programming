@@ -40,7 +40,7 @@ public:
 		auto type = protocol == ip_protocol::tcp ? socket_type::stream : socket_type::datagram;
 
 		this->_socket = { type };
-		this->_socket.bind(ip_address::loopback(), port);
+		this->_socket.bind(address, port);
 	}
 
 	void start() const requires (protocol == ip_protocol::tcp) {
