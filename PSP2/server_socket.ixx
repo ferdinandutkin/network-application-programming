@@ -44,7 +44,7 @@ public:
 	
 		if (client_socket<protocol> client = { ::accept(*this, nullptr, nullptr) }; client != INVALID_SOCKET) {
 			return client;
-		}
+		} 
 		else throw wsa_exception(__func__);
 	}
 

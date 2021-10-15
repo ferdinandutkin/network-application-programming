@@ -28,7 +28,7 @@ int main() {
 			bool done{};
 
 
-			while (not done)
+			while (true)
 			{
 
 				try
@@ -41,14 +41,11 @@ int main() {
 						std::cout << std::format("received: {}", empty ? "empty message" : message) << std::endl;
 
 						if (empty) {
-							done = true;
 							break;
 						}
 					
 					    s << message;
-						
-						
-						done = empty;
+
 
 						std::cout << std::format("sent: {}", message) << std::endl;
 						
